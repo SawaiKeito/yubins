@@ -21,6 +21,10 @@ Route::get('/', function () {
 Route::get('/', function(){return redirect('/yubins');});
 Route::get('/yubins', [App\Http\Controllers\YubinController::class, 'index'])->middleware('auth');
 Route::post('/yubins', [App\Http\Controllers\YubinController::class, 'store'])->middleware('auth');
+//csvアップロード
+Route::post('/upload', [App\Http\Controllers\YubinController::class, 'upload'])->middleware('auth');
+//CSVダウンロード
+Route::post('/csvexport',[YubinController::class, 'csvexport'])->name('yubins.csvexport')->middleware('auth');
 // 登録画面の表示
 Route::get('/create', [YubinController::class, 'create'])->name('yubins.create')->middleware('auth');
 // 住所の登録処理
@@ -30,8 +34,7 @@ Route::get('/edit/{id}', [YubinController::class, 'edit'])->name('yubins.edit')-
 //更新処理
 Route::post('/update/{id}', [YubinController::class, 'update'])->name('yubins.update')->middleware('auth');
 //削除
-Route::post('/destroy{id}', [YubinController::class, 'destroy'])->name('yubins.destroy')->middleware('auth');
-
+Route::post('/destroy', [YubinController::class, 'destroy'])->name('yubins.destroy')->middleware('auth');
 
 \URL::forceScheme('https');
 Auth::routes();

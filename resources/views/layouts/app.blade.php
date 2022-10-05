@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
+     <link rel="shortcut icon" href="/yubins/images.png" type="image/x-icon">
 </head>
 <body>
     <div id="app">

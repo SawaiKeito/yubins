@@ -33,33 +33,63 @@
           <td>{{ $row->tell}}</td>
           <td>{{ $row->phone }}</td>
           <td>{{ $row->email }}</td>
-          <td><a href="{{ route('yubins.edit', ['id'=>$row->id]) }}" class="btn btn-info">編集</a></td>
           <td>
-              
-        <form action="{{ route('yubins.destroy', ['id'=>$row->id]) }}" method="POST">
+        <form action="{{ route('yubins.edit', ['id'=>$row->id]) }}">
           @csrf
           @method('delete')
+          <button type="submit">編集</button>
+        </form>
+          </td>
+          <td>
+        <form action="{{ route('yubins.destroy') }}" method="POST">
+          @csrf
+          <input type="hidden" name="id" value="{{$row->id}}">
           <button type="submit" class="btn btn-danger" onclick='return confirm("削除しますか？");'>削除</button>
         </form>
-        
           </td>
           </tr> 
           @endforeach
       </tbody>
      </table>
-        <div class="d-inline-block">
-         <li>
-            <a href="{{ asset('/home') }}" class="btn btn-outline-secondary" role="button">
-                <i class="fa fa-reply mr-1" aria-hidden="true"></i>{{ __('ログアウト') }}
-            </a>
-         </li>    
-         <li>
-             @if (Route::has('register'))
-            <a class="nav-link" href="{{ asset('/register') }}">{{ __('ユーザーの登録') }}</a>
-            @endif
-        </li>    
-        <li>
-            <a href="{{ route('yubins.create') }}">新規登録</a>
-        </li>
-      </div>
+      @method('csvexport()')
+      <form action="{{ route('yubins.csvexport') }}" method="post">
+          @csrf
+          <button type="submit">CSV出力</button>
+    　</form>
+       <div class="wrap">
+           <label for="label1">▼ メニュー</label>
+           <input type="checkbox" id="label1" class="switch" />
+           　<div class="content">
+                              <div class="d-inline-block">
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                    </form>
+                                 </li> 
+                                <li>
+                                  @if (Route::has('register'))
+                                   <a class="nav-link" href="{{ asset('/register') }}">{{ __('ユーザーの登録') }}</a>
+                                  @endif
+                                 </li>    
+                                 <li>
+                                   <a href="{{ route('yubins.create') }}">新規登録</a>
+                                 </li>
+                               </div>
+            </div>                   
+       </div> 
+       <div class="upload">
+    <p>DBに追加したいCSVデータを選択してください。</p>
+    <form action="upload" method="post" enctype="multipart/form-data">
+      @csrf
+      <input type="file" name="csvdata" />
+      <button>送信</button>
+    </form>
+  </div>
+  
+ 
 @endsection
